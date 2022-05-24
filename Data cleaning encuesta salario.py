@@ -13,7 +13,6 @@ df['salario anual'] = df['salario anual'].str.replace(",", "").astype(float)
 
 df['pais de trabajo'] = df['pais de trabajo'].str.strip()
 
-
 df['pais de trabajo'] = df['pais de trabajo'].replace(to_replace=r'\s', value=r'', regex=True)
 
 df['pais de trabajo'] = df['pais de trabajo'].replace(to_replace=['England',
@@ -160,25 +159,15 @@ df['pais de trabajo'] = df['pais de trabajo'].replace(to_replace=['Australi',
 
 df1 = df.groupby('pais de trabajo')['salario anual'].median().astype(int).reset_index()
 df2 = df1[df1['pais de trabajo'].isin(['USA', 'UK', 'Spain'])]
-df2['real'] = None
 print(df2)
-print(df2.loc[133, 'real'])
-plt.bar(data=df1[df1['pais de trabajo'].isin(['USA', 'UK', 'Spain'])],
+
+df2.loc[133, 'salario anual'] = round(df2.loc[133, 'salario anual']*1.12)
+df2.loc[145, 'salario anual'] = round(df2.loc[145, 'salario anual']*1.26)
+print(df2.dtypes)
+
+bar = plt.bar(data=df2,
         x='pais de trabajo',
         height='salario anual')
-#plt.show()
-for pais in df2['pais de trabajo']:
-    for salario in df2['salario anual']:
-        if pais == 'Spain':
-            salario_real = (salario*1,12)
-            df2.loc[133, 'real'] = salario_real
-            
-        if pais == 'UK':
-            salario_real = (salario*1,26)
-            df2.loc[145, 'real'] = salario_real
-            
-        if pais == 'USA':
-            salario_real = salario
-            df2.loc[146, 'real'] = salario_real
-        
-print(df2)
+bar.yaxis.set_tick_formatter('${x:.2f}')
+
+plt.show()
