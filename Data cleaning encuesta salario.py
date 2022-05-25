@@ -13,7 +13,9 @@ df['salario anual'] = df['salario anual'].str.replace(",", "").astype(float)
 
 df['pais de trabajo'] = df['pais de trabajo'].str.strip()
 
-df['pais de trabajo'] = df['pais de trabajo'].replace(to_replace=r'\s', value=r'', regex=True)
+regex = "^U[^kKaA][^kKaA].+"
+
+print(df[df['pais de trabajo'].str.contains(regex)])
 
 df['pais de trabajo'] = df['pais de trabajo'].replace(to_replace=['England',
                                                                   'England,Gb',
